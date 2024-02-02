@@ -1,0 +1,44 @@
+package mod.lyuxc.MagicClover;
+
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.RandomSource;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.neoforged.fml.ModList;
+
+import java.util.List;
+
+public class MagicCloverGetItem {
+    public static final Item air = BuiltInRegistries.ITEM.get(new ResourceLocation("minecraft:air"));
+    private static final List<? extends String> WhiteList = MagicClover.WhiteList.get();
+    private static final int randomSeed = (ModList.get().size() - 1) * 1024;
+    public static ItemStack getAnyRandomItem() {
+        Item item;
+        do {
+            item = getItemById(RandomSource.create().nextInt(MagicClover.RANDOM.nextInt(randomSeed)));
+        } while(item==air);
+        for(String id : MagicClover.BlackList.get()) {
+            if(item != getItemByName(id)){
+                return new ItemStack(item);
+            }
+        }
+        return new ItemStack(air);
+    }
+    public static ItemStack getRandomItem() {
+        int randomID_WhiteList = MagicClover.RANDOM.nextInt(WhiteList.size());
+        Item item = getItemByName(WhiteList.get(randomID_WhiteList));
+        for(String id : MagicClover.BlackList.get()) {
+            if(item == getItemByName(id)){
+                return new ItemStack(air);
+            }
+        }
+        return new ItemStack(item);
+    }
+    private static Item getItemById(int id) {
+        return BuiltInRegistries.ITEM.byId(id);
+    }
+    private static Item getItemByName(String itemName) {
+        return BuiltInRegistries.ITEM.get(new ResourceLocation(itemName));
+    }
+}

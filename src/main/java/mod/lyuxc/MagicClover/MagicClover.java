@@ -12,13 +12,11 @@ import net.neoforged.neoforge.common.ModConfigSpec;
 import net.neoforged.neoforge.event.level.BlockEvent;
 
 import java.util.List;
-import java.util.Random;
 
 @Mod(MagicClover.MOD_ID)
 @Mod.EventBusSubscriber
 public class MagicClover {
     public static final String MOD_ID = "magic_clover";
-    public static final Random RANDOM = new Random();
     public static  ModConfigSpec.Builder builder = new ModConfigSpec.Builder();
     public static ModConfigSpec.ConfigValue<Integer> Creeper_Spawn_Probability;
     public static ModConfigSpec.ConfigValue<Boolean> Randomly_Select_all_items;

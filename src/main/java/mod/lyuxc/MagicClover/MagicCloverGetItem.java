@@ -7,26 +7,25 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.fml.ModList;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class MagicCloverGetItem {
     public static final Item air = BuiltInRegistries.ITEM.get(new ResourceLocation("minecraft:air"));
     private static final List<? extends String> WhiteList = MagicClover.WhiteList.get();
-    private static final int randomSeed = (ModList.get().size() - 1) * 1024;
+    private static final RandomSource RANDOM_SOURCE = RandomSource.create(ModList.get().size() * 1024000L);
     public static ItemStack getAnyRandomItem() {
-        Item item;
-        do {
-            item = getItemById(RandomSource.create().nextInt(MagicClover.RANDOM.nextInt(randomSeed)));
-        } while(item==air);
-        for(String id : MagicClover.BlackList.get()) {
-            if(item != getItemByName(id)){
-                return new ItemStack(item);
-            }
+        List<ItemStack> item = new ArrayList<>();
+        for(ResourceLocation rl : BuiltInRegistries.ITEM.keySet()) {
+            item.add(BuiltInRegistries.ITEM.get(rl).getDefaultInstance());
         }
-        return new ItemStack(air);
+        for(String blackItem : MagicClover.BlackList.get()) {
+            item.remove(getItemByName(blackItem).getDefaultInstance());
+        }
+        return item.get(RANDOM_SOURCE.nextInt(item.size()));
     }
     public static ItemStack getRandomItem() {
-        int randomID_WhiteList = MagicClover.RANDOM.nextInt(WhiteList.size());
+        int randomID_WhiteList = RANDOM_SOURCE.nextInt(WhiteList.size());
         Item item = getItemByName(WhiteList.get(randomID_WhiteList));
         for(String id : MagicClover.BlackList.get()) {
             if(item == getItemByName(id)){
@@ -34,9 +33,6 @@ public class MagicCloverGetItem {
             }
         }
         return new ItemStack(item);
-    }
-    private static Item getItemById(int id) {
-        return BuiltInRegistries.ITEM.byId(id);
     }
     private static Item getItemByName(String itemName) {
         return BuiltInRegistries.ITEM.get(new ResourceLocation(itemName));

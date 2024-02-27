@@ -1,6 +1,8 @@
 package mod.lyuxc.MagicClover;
 
 import mod.lyuxc.MagicClover.datagen.DataGeneration;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.TallGrassBlock;
 import net.neoforged.bus.api.IEventBus;
@@ -8,9 +10,11 @@ import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.ModLoadingContext;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.config.ModConfig;
+import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.neoforged.neoforge.common.ModConfigSpec;
 import net.neoforged.neoforge.event.level.BlockEvent;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Mod(MagicClover.MOD_ID)
@@ -23,10 +27,12 @@ public class MagicClover {
     public static ModConfigSpec.ConfigValue<List<? extends String>> BlackList;
     public static ModConfigSpec.ConfigValue<List<? extends String>> WhiteList;
     public static ModConfigSpec.ConfigValue<Integer> ProbabilityOfMagicCLover;
+    public static List<ItemStack> allItems = new ArrayList<>();
 
     public MagicClover(IEventBus iEventBus) {
         Registry.init(iEventBus);
         iEventBus.addListener(DataGeneration::generate);
+        iEventBus.addListener(this::commonSetupEvent);
         Creeper_Spawn_Probability = builder.defineInRange("Chance to spawn a creeper from clover",10,0,100);
         Randomly_Select_all_items = builder.define("any item add to Random list",false);
         BlackList = builder.defineList("BlackList",List.of(""),o -> true);
@@ -40,6 +46,11 @@ public class MagicClover {
             if(Math.random() * 100.0d < ProbabilityOfMagicCLover.get()) {
                 event.getPlayer().drop(new ItemStack(Registry.MAGIC_CLOVER_ITEM_DEFERRED_ITEM.get().asItem()),true);
             }
+        }
+    }
+    private void commonSetupEvent(FMLCommonSetupEvent event) {
+        for (ResourceLocation rl : BuiltInRegistries.ITEM.keySet()) {
+            allItems.add(BuiltInRegistries.ITEM.get(rl).getDefaultInstance());
         }
     }
 }

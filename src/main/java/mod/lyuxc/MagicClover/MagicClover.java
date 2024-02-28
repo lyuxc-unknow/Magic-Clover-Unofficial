@@ -27,6 +27,7 @@ public class MagicClover {
     public static ModConfigSpec.ConfigValue<List<? extends String>> BlackList;
     public static ModConfigSpec.ConfigValue<List<? extends String>> WhiteList;
     public static ModConfigSpec.ConfigValue<Integer> ProbabilityOfMagicCLover;
+    public static ModConfigSpec.ConfigValue<Integer> count;
     public static List<ItemStack> allItems = new ArrayList<>();
 
     public MagicClover(IEventBus iEventBus) {
@@ -38,6 +39,7 @@ public class MagicClover {
         BlackList = builder.defineList("BlackList",List.of(""),o -> true);
         WhiteList = builder.defineList("WhiteList",List.of(""),o -> true);
         ProbabilityOfMagicCLover = builder.defineInRange("The probability of magic clover falling",10,0,100);
+        count = builder.defineInRange("单次最大出货数量",1,1,64 * 3);
         ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON,builder.build());
     }
     @SubscribeEvent
@@ -51,6 +53,9 @@ public class MagicClover {
     private void commonSetupEvent(FMLCommonSetupEvent event) {
         for (ResourceLocation rl : BuiltInRegistries.ITEM.keySet()) {
             allItems.add(BuiltInRegistries.ITEM.get(rl).getDefaultInstance());
+        }
+        for (String blackItem : BlackList.get()) {
+            allItems.remove(MagicCloverGetItem.getItemByName(blackItem).getDefaultInstance());
         }
     }
 }

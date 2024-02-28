@@ -29,7 +29,9 @@ public class MagicCloverItem extends Item {
                 pLevel.addFreshEntity(creeper);
             } else {
                if(MagicClover.Randomly_Select_all_items.get()) {
-                   pPlayer.drop(MagicCloverGetItem.getAnyRandomItem(),true);
+                   for(ItemStack item : MagicCloverGetItem.getAnyRandomItem()) {
+                       pPlayer.drop(item,true);
+                   }
                } else {
                    pPlayer.drop(MagicCloverGetItem.getRandomItem(),true);
                }

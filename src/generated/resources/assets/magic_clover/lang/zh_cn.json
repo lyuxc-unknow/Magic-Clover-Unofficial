@@ -1,3 +1,4 @@
 {
-  "item.magic_clover.magic_clover": "魔法四叶草"
+  "item.magic_clover.magic_clover": "魔法四叶草",
+  "tips.magic_clover.item": "有%s%%的概率原地生成闪电苦力怕，祝你好运"
 }

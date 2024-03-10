@@ -13,5 +13,6 @@ public class langZhCn extends LanguageProvider {
     @Override
     protected void addTranslations() {
         add(Registry.MAGIC_CLOVER_ITEM_DEFERRED_ITEM.get(),"魔法四叶草");
+        add("tips.magic_clover.item","有%s%%的概率原地生成闪电苦力怕，祝你好运");
     }
 }

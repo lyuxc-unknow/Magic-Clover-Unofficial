@@ -47,6 +47,6 @@ public class MagicCloverItem extends Item {
 
     @Override
     public void appendHoverText(@NotNull ItemStack pStack, @Nullable Level pLevel, List<Component> pTooltipComponents, @NotNull TooltipFlag pIsAdvanced) {
-        pTooltipComponents.add(Component.literal("有" + MagicClover.Creeper_Spawn_Probability.get() + "%的概率原地生成闪电爬行者，祝你好运"));
+        pTooltipComponents.add(Component.translatable("tips.magic_clover.item",MagicClover.Creeper_Spawn_Probability.get()));
     }
 }

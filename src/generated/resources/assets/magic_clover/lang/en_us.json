@@ -1,3 +1,4 @@
 {
-  "item.magic_clover.magic_clover": "Magic Clover"
+  "item.magic_clover.magic_clover": "Magic Clover",
+  "tips.magic_clover.item": "There is a %s %%chance of spawning lightning creepers on the spot. Good luck to you."
 }

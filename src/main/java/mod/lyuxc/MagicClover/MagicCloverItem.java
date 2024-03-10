@@ -1,5 +1,6 @@
 package mod.lyuxc.MagicClover;
 
+import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.InteractionHand;
@@ -10,8 +11,12 @@ import net.minecraft.world.entity.monster.Creeper;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
+import java.util.List;
 
 public class MagicCloverItem extends Item {
     public MagicCloverItem(Properties pProperties) {
@@ -29,9 +34,7 @@ public class MagicCloverItem extends Item {
                 pLevel.addFreshEntity(creeper);
             } else {
                if(MagicClover.Randomly_Select_all_items.get()) {
-                   for(ItemStack item : MagicCloverGetItem.getAnyRandomItem()) {
-                       pPlayer.drop(item,true);
-                   }
+                   pPlayer.drop(MagicCloverGetItem.getAnyRandomItem(),true);
                } else {
                    pPlayer.drop(MagicCloverGetItem.getRandomItem(),true);
                }
@@ -40,5 +43,10 @@ public class MagicCloverItem extends Item {
             pPlayer.getCooldowns().addCooldown(pPlayer.getItemInHand(pUsedHand).getItem(),5);
         }
         return super.use(pLevel, pPlayer, pUsedHand);
+    }
+
+    @Override
+    public void appendHoverText(@NotNull ItemStack pStack, @Nullable Level pLevel, List<Component> pTooltipComponents, @NotNull TooltipFlag pIsAdvanced) {
+        pTooltipComponents.add(Component.literal("有" + MagicClover.Creeper_Spawn_Probability.get() + "%的概率原地生成闪电爬行者，祝你好运"));
     }
 }

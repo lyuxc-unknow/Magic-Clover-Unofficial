@@ -7,7 +7,6 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.fml.ModList;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class MagicCloverGetItem {
@@ -15,12 +14,8 @@ public class MagicCloverGetItem {
     private static final List<? extends String> WhiteList = MagicClover.WhiteList.get();
     private static final RandomSource RANDOM_SOURCE = RandomSource.create(ModList.get().size() * 1024000L);
 
-    public static List<ItemStack> getAnyRandomItem() {
-        List<ItemStack> items = new ArrayList<>();
-        for(int i=0;i<MagicClover.count.get();i++) {
-            items.add(MagicClover.allItems.get(RandomSource.create().nextInt(MagicClover.allItems.size())));
-        }
-        return items;
+    public static ItemStack getAnyRandomItem() {
+        return MagicClover.allItems.get(RandomSource.create().nextInt(MagicClover.allItems.size()));
     }
 
     public static ItemStack getRandomItem() {
